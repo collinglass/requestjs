@@ -9,32 +9,40 @@
 // @version 0.0.2
 //
 
-function request(route, method, json) {
+function request(route, method, data, json) {
 	return new Promise(function(resolve, reject){
 		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.open(method, route, true);
+
+		if (method == "POST"){
+			//Send the appropriate headers
+			xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+			console.log(method);
+		}
 
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == 4 ) {
+				if (method == "POST")
+					console.log(xmlhttp.responseText);
 				if (xmlhttp.status == 200) {
 					if (json == true)
-						resolve((eval("(" + xmlhttp.responseText + ")")))
+						resolve(JSON.parse(xmlhttp.responseText))
 					else
 						resolve(xmlhttp.responseText)
 				} else if (xmlhttp.status == 400) {
 					if (json == true)
-						reject((eval("(" + xmlhttp.responseText + ")")))
+						reject(JSON.parse(xmlhttp.responseText))
 					else
 						reject(xmlhttp.responseText)
 				} else {
 					if (json == true)
-						reject((eval("(" + xmlhttp.responseText + ")")))
+						reject(JSON.parse(xmlhttp.responseText))
 					else
 						reject(xmlhttp.responseText)
 				}
 			}
 		}
 
-		xmlhttp.open(method, route, true);
-		xmlhttp.send();
+		xmlhttp.send(data);
 	});
 }
