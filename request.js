@@ -6,7 +6,7 @@
 // @author Collin Glass <collinglass@gmx.com>
 // @copyright 2014 Collin Glass
 // @license BSD-3 <https://raw.github.com/collinglass/request/master/LICENSE>
-// @version 0.0.2
+// @version 0.0.3
 //
 
 function request(route, method, data, json) {
@@ -16,29 +16,32 @@ function request(route, method, data, json) {
 
 		if (method == "POST"){
 			//Send the appropriate headers
-			xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
-			console.log(method);
+			xmlhttp.setRequestHeader("Content-type", "application/json");
 		}
 
 		xmlhttp.onreadystatechange = function() {
-			if (xmlhttp.readyState == 4 ) {
+			if ( xmlhttp.readyState == 4 ) {
 				if (method == "POST")
-					console.log(xmlhttp.responseText);
+					console.log("Response:", xmlhttp.responseText);
+					console.log("method:", method);
 				if (xmlhttp.status == 200) {
-					if (json == true)
+					if (json == true) {
 						resolve(JSON.parse(xmlhttp.responseText))
-					else
+					} else {
 						resolve(xmlhttp.responseText)
+					}
 				} else if (xmlhttp.status == 400) {
-					if (json == true)
+					if (json == true) {
 						reject(JSON.parse(xmlhttp.responseText))
-					else
+					} else {
 						reject(xmlhttp.responseText)
+					}
 				} else {
-					if (json == true)
+					if (json == true) {
 						reject(JSON.parse(xmlhttp.responseText))
-					else
+					} else {
 						reject(xmlhttp.responseText)
+					}
 				}
 			}
 		}
