@@ -12,6 +12,7 @@
 function request(route, method, data, json) {
 	return new Promise(function(resolve, reject){
 		var xmlhttp = new XMLHttpRequest();
+		if(method == null){ method = "GET"; }
 		xmlhttp.open(method, route, true);
 
 		if (method == "POST"){
